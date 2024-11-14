@@ -28,7 +28,7 @@ terminal = TerminalCommand()
 
 ## Features
 
--   TUI written with [Textual](https://textual.textualize.io/) inspired by [Sevastolink terminals](https://static.wikia.nocookie.net/alienisolation_gamepedia/images/e/e7/2014-10-09_00013.jpg/revision/latest/scale-to-width-down/1000?cb=20141009215012) in the game Alien: Isolation and other games such as Atomic Heart
+-   TUI written with [Textual](https://textual.textualize.io/) inspired by Sevastolink terminals in the game Alien: Isolation and other games such as Atomic Heart
 
     -   maintained as a separate project at https://github.com/sergeyyurkov1/pythonui (currently in Alpha)
 
