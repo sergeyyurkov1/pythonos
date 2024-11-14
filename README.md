@@ -28,8 +28,10 @@ terminal = TerminalCommand()
 
 ## Features
 
--   TUI written with [Textual](https://textual.textualize.io/) inspired by Sevastolink terminals in the game Alien: Isolation and other games such as Atomic Heart
+-   TUI written with [Textual](https://textual.textualize.io/) inspired by [Sevastolink terminals](https://static.wikia.nocookie.net/alienisolation_gamepedia/images/e/e7/2014-10-09_00013.jpg/revision/latest/scale-to-width-down/1000?cb=20141009215012) in the game Alien: Isolation and other games such as Atomic Heart
+
     -   maintained as a separate project at https://github.com/sergeyyurkov1/pythonui (currently in Alpha)
+
 -   Command-line interface with the ability to install and run Python and Linux packages including GUI programs such as Firefox
 -   Alpine Linux and i3-WM based
 -   fully automated build pipeline with Github Actions
@@ -42,8 +44,8 @@ Please download the latest release from https://github.com/sergeyyurkov1/alpine-
 -   Unzip the archive. Inside you will find a VirtualBox .vdi image file
 -   Create a new virtual machine in VirtualBox
     -   select `Linux` - `Other Linux (64-bit)`
-    -   make sure to assign 2 processor cores to the machine in the `System -> Processor` tab, otherwise it will fail to boot (this is an issue with VirtualBox on some hardware configurations)
-    -   attach the .vdi image in the `Storage` tab. Select `Controller: SATA` and click `Add hard disk`
+    -   attach the .vdi image
+    -   make sure to assign >= 2 processor cores to the machine in the `System -> Processor` tab, otherwise it will fail to boot (this is an issue with VirtualBox on some hardware configurations)
 -   Run the machine
     -   you will be greeted with a shell login prompt - username and password are `pui` (can be changed if desired)
     -   you should see the default i3-WM screen. Press `Enter` key twice to generate a config file - use `Win` key as modifier key
