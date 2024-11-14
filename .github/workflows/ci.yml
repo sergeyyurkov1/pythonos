@@ -34,7 +34,9 @@ jobs:
         with:
           path: /home/runner/work/pythonos/pythonos/alpine-bios.vdi
 
-      - run: zip -v -j alpine-pythonui.zip /home/runner/work/pythonos/pythonos/alpine-bios.vdi
+      - run: |
+          # zip -v -j alpine-pythonui.zip /home/runner/work/pythonos/pythonos/alpine-bios.vdi
+          zip -v -j alpine-pythonui.zip alpine-bios.vdi
 
       # - name: Release
       #   uses: technote-space/action-gh-release@v2
