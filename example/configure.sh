@@ -9,7 +9,7 @@ step() {
 uname -a
 
 step 'Set up timezone'
-setup-timezone -z Europe/Prague
+setup-timezone -z Asia/Shanghai
 
 step 'Set up networking'
 cat > /etc/network/interfaces <<-EOF
@@ -36,3 +36,26 @@ rc-update add termencoding boot
 
 step 'List /usr/local/bin'
 ls -la /usr/local/bin
+
+step '/usr/local/bin'
+chmod +x /usr/local/bin/install-pui
+chmod +x /usr/local/bin/git-proxy-on
+chmod +x /usr/local/bin/git-proxy-on-2
+chmod +x /usr/local/bin/git-proxy-off
+
+step 'Setup'
+adduser -D --shell /bin/ash pui
+echo 'pui:pui' | chpasswd
+for u in $(ls /home); do for g in wheel disk lp input audio cdrom dialout video netdev games users; do addgroup $u $g; done;done
+echo 'permit persist :wheel' > /etc/doas.d/doas.conf
+setup-xorg-base
+apk update
+# apk add xf86-video-vboxvideo
+apk add font-dejavu
+apk add dbus
+dbus-uuidgen > /var/lib/dbus/machine-id
+rc-update add dbus
+apk add i3wm xfce4-terminal i3status bash git
+echo 'exec i3' > /home/pui/.xinitrc
+echo 'startx' > /home/pui/.profile
+apk add elogind polkit-elogind

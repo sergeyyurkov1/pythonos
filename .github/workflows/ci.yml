@@ -11,7 +11,7 @@ jobs:
       - name: Install qemu-utils
         run: |
           sudo apt-get update
-          sudo apt-get install qemu-utils
+          sudo apt-get install qemu-utils zip
 
       - uses: actions/checkout@v3
 
@@ -25,108 +25,31 @@ jobs:
               --fs-skel-dir example/rootfs \
               --fs-skel-chown root:root \
               --script-chroot \
-              alpine-bios-$(date +%Y-%m-%d).qcow2 -- ./example/configure.sh
+              alpine-bios.qcow2 -- ./example/configure.sh
+          qemu-img convert -f qcow2 alpine-bios.qcow2 -O vdi alpine-bios.vdi
+          pwd
 
-      - name: Build image for x86_64 with BIOS mode and GPT
-        run: |
-          sudo ./alpine-make-vm-image \
-              --image-format raw \
-              --image-size 2G \
-              --partition \
-              --repositories-file example/repositories \
-              --packages "$(cat example/packages)" \
-              --fs-skel-dir example/rootfs \
-              --fs-skel-chown root:root \
-              --script-chroot \
-              alpine-bios-part-$(date +%Y-%m-%d).raw -- ./example/configure.sh
-
-      - name: Build image for x86_64 with UEFI mode
-        run: |
-          sudo ./alpine-make-vm-image \
-              --image-format qcow2 \
-              --image-size 2G \
-              --boot-mode UEFI \
-              --repositories-file example/repositories \
-              --packages "$(cat example/packages)" \
-              --fs-skel-dir example/rootfs \
-              --fs-skel-chown root:root \
-              --script-chroot \
-              alpine-uefi-$(date +%Y-%m-%d).qcow2 -- ./example/configure.sh
-
-      - name: Install qemu-aarch64 and register in binfmt
-        uses: jirutka/setup-alpine@v1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          arch: aarch64
+          path: /home/runner/work/pythonos/pythonos/alpine-bios.vdi
 
-      - name: Build image for aarch64
-        run: |
-          sudo ./alpine-make-vm-image \
-              --arch aarch64 \
-              --image-format qcow2 \
-              --image-size 2G \
-              --repositories-file example/repositories \
-              --packages "$(cat example/packages) linux-virt@edge" \
-              --fs-skel-dir example/rootfs \
-              --fs-skel-chown root:root \
-              --script-chroot \
-              alpine-aarch64-$(date +%Y-%m-%d).qcow2 -- ./example/configure.sh
+      - run: |
+          # zip -v -j alpine-pythonui.zip /home/runner/work/pythonos/pythonos/alpine-bios.vdi
+          zip -v -j alpine-pythonui.zip alpine-bios.vdi
 
-  test-alpine:
-    name: Test on Alpine
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      # - name: Release
+      #   uses: technote-space/action-gh-release@v2
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: alpine-pythonui.zip
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # We must run this outside the chroot.
-      - run: sudo modprobe nbd max_part=16
-
-      - name: Set up latest Alpine Linux
-        uses: jirutka/setup-alpine@v1
-
-      - name: Build image for x86_64 with BIOS mode and without GPT
-        run: |
-          ./alpine-make-vm-image \
-              --image-format qcow2 \
-              --image-size 2G \
-              --repositories-file example/repositories \
-              --packages "$(cat example/packages)" \
-              --fs-skel-dir example/rootfs \
-              --fs-skel-chown root:root \
-              --script-chroot \
-              alpine-bios-$(date +%Y-%m-%d).qcow2 -- ./example/configure.sh
-        shell: alpine.sh --root {0}
-
-      - name: Build image for x86_64 with UEFI mode
-        run: |
-          ./alpine-make-vm-image \
-              --image-format qcow2 \
-              --image-size 2G \
-              --boot-mode UEFI \
-              --repositories-file example/repositories \
-              --packages "$(cat example/packages)" \
-              --fs-skel-dir example/rootfs \
-              --fs-skel-chown root:root \
-              --script-chroot \
-              alpine-uefi-$(date +%Y-%m-%d).qcow2 -- ./example/configure.sh
-        shell: alpine.sh --root {0}
-
-      - name: Install qemu-aarch64 and register in binfmt
-        uses: jirutka/setup-alpine@v1
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          arch: aarch64
-          shell-name: alpine-aarch64.sh
-
-      # Note: We cannot run alpine-make-vm-image inside emulated chroot due to nbd.
-      - name: Build image for aarch64
-        run: |
-          ./alpine-make-vm-image \
-              --arch aarch64 \
-              --branch edge \
-              --image-format qcow2 \
-              --image-size 2G \
-              --packages "$(cat example/packages)" \
-              --fs-skel-dir example/rootfs \
-              --fs-skel-chown root:root \
-              --script-chroot \
-              alpine-aarch64-$(date +%Y-%m-%d).qcow2 -- ./example/configure.sh
-        shell: alpine.sh --root {0}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: alpine-pythonui.zip
