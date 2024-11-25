@@ -55,7 +55,7 @@ apk add font-dejavu
 apk add dbus
 dbus-uuidgen > /var/lib/dbus/machine-id
 rc-update add dbus
-apk add i3wm xfce4-terminal i3status bash git
+apk add i3wm alacritty i3status bash git
 echo 'exec i3' > /home/pui/.xinitrc
 echo 'startx' > /home/pui/.profile
 apk add elogind polkit-elogind
