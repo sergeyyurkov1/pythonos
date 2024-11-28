@@ -76,9 +76,11 @@ Refer to [i3 User’s Guide](https://i3wm.org/docs/userguide.html) for more ways
 
 ## Demo
 
-[![PythonOS演示1](./screenshots/2.png)](https://gitlab.com/sergeyyurkov1/store/-/raw/main/2024-11-14_00-12-34_-_2_-_1.mp4?ref_type=heads&inline=true)
+[![PythonOS演示](./screenshots/2.png)](https://www.bilibili.com/video/BV1yNBZYuENB/)
 
-[![PythonOS演示2](./screenshots/3.png)](https://gitlab.com/sergeyyurkov1/store/-/raw/main/2024-11-14_00-12-34_-_2_-_2.mp4?ref_type=heads&inline=true)
+<!-- [![PythonOS演示1](./screenshots/2.png)](https://gitlab.com/sergeyyurkov1/store/-/raw/main/2024-11-14_00-12-34_-_2_-_1.mp4?ref_type=heads&inline=true)
+
+[![PythonOS演示2](./screenshots/3.png)](https://gitlab.com/sergeyyurkov1/store/-/raw/main/2024-11-14_00-12-34_-_2_-_2.mp4?ref_type=heads&inline=true) -->
 
 ## Roadmap
 
